@@ -1,0 +1,137 @@
+name: Release builds
+
+# Builds Ravune for Windows, macOS and Linux and attaches it to a GitHub release:
+#   Windows: an installer (Inno Setup) and a zip
+#   macOS:   Ravune.app in a .dmg (ad-hoc signed, not notarized)
+#   Linux:   a tar.gz
+# Run it by hand with the release's tag (create the tag and a draft release first, check
+# the files, then publish the draft).
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag to build and attach to (it must exist)
+        required: true
+
+permissions:
+  contents: write
+
+env:
+  CARGO_TERM_COLOR: always
+  TAG: ${{ inputs.tag }}
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            name: windows-x64
+          - os: macos-latest
+            name: macos-arm64
+          - os: ubuntu-latest
+            name: linux-x64
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag }}
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - name: Linux audio/MIDI headers
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libasound2-dev
+      # RAVUNE_RELEASE: this build may update itself from the release's files
+      - run: cargo build --release -p ravune -p ravune-host -p ravune-mcp
+        env:
+          RAVUNE_RELEASE: "1"
+      - name: Version
+        run: echo "VERSION=${TAG#v}" >> "$GITHUB_ENV"
+
+      - name: Windows installer and zip
+        if: runner.os == 'Windows'
+        run: |
+          choco install innosetup --no-progress -y
+          "/c/Program Files (x86)/Inno Setup 6/ISCC.exe" "//DVersion=$VERSION" installer/ravune.iss
+          dir="ravune-$VERSION-${{ matrix.name }}"
+          mkdir "$dir"
+          cp target/release/ravune.exe target/release/ravune-host.exe target/release/ravune-mcp.exe README.md LICENSE-MIT LICENSE-APACHE "$dir/"
+          7z a "dist/$dir.zip" "$dir" > /dev/null
+          # Ravune was Phasor until 0.9: copies of 0.8 update from phasor-* files holding phasor* programs
+          legacy="phasor-$VERSION-${{ matrix.name }}"
+          mkdir "$legacy"
+          for b in "" -host -mcp; do cp "target/release/ravune$b.exe" "$legacy/phasor$b.exe"; done
+          7z a "dist/$legacy.zip" "$legacy" > /dev/null
+          cp "dist/$dir-setup.exe" "dist/$legacy-setup.exe"
+
+      - name: macOS app and disk image
+        if: runner.os == 'macOS'
+        run: |
+          app=dmg/Ravune.app
+          mkdir -p "$app/Contents/MacOS" "$app/Contents/Resources" dist
+          cp target/release/ravune target/release/ravune-host target/release/ravune-mcp "$app/Contents/MacOS/"
+          mkdir ravune.iconset
+          for s in 16 32 64 128 256; do
+            sips -z $s $s assets/icon.png --out "ravune.iconset/icon_${s}x${s}.png" > /dev/null
+          done
+          for s in 16 32 128; do cp "ravune.iconset/icon_$((s * 2))x$((s * 2)).png" "ravune.iconset/icon_${s}x${s}@2x.png"; done
+          iconutil -c icns ravune.iconset -o "$app/Contents/Resources/ravune.icns"
+          cat > "$app/Contents/Info.plist" <<PLIST
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>CFBundleName</key><string>Ravune</string>
+            <key>CFBundleDisplayName</key><string>Ravune</string>
+            <key>CFBundleIdentifier</key><string>io.github.g1lg1l.ravune</string>
+            <key>CFBundleExecutable</key><string>ravune</string>
+            <key>CFBundleIconFile</key><string>ravune</string>
+            <key>CFBundlePackageType</key><string>APPL</string>
+            <key>CFBundleShortVersionString</key><string>$VERSION</string>
+            <key>CFBundleVersion</key><string>$VERSION</string>
+            <key>LSMinimumSystemVersion</key><string>11.0</string>
+            <key>NSHighResolutionCapable</key><true/>
+            <key>CFBundleDocumentTypes</key>
+            <array><dict>
+              <key>CFBundleTypeName</key><string>Ravune project</string>
+              <key>CFBundleTypeRole</key><string>Editor</string>
+              <key>CFBundleTypeExtensions</key><array><string>ravune</string></array>
+            </dict></array>
+          </dict>
+          </plist>
+          PLIST
+          codesign --force --deep --sign - "$app"
+          # the tarball is what Ravune updates itself from (a .dmg would need mounting)
+          dir="ravune-$VERSION-${{ matrix.name }}"
+          mkdir -p "tar/$dir"
+          ditto "$app" "tar/$dir/Ravune.app"
+          COPYFILE_DISABLE=1 tar -czf "dist/$dir.tar.gz" -C tar "$dir"
+          # for copies of Phasor 0.8: the same app, under the name their updater looks for
+          legacy="phasor-$VERSION-${{ matrix.name }}"
+          mkdir -p "tar/$legacy"
+          ditto "$app" "tar/$legacy/Phasor.app"
+          COPYFILE_DISABLE=1 tar -czf "dist/$legacy.tar.gz" -C tar "$legacy"
+          ln -s /Applications dmg/Applications
+          hdiutil create -volname Ravune -srcfolder dmg -ov -format UDZO "dist/ravune-$VERSION-${{ matrix.name }}.dmg"
+
+      - name: Linux tarball
+        if: runner.os == 'Linux'
+        run: |
+          dir="ravune-$VERSION-${{ matrix.name }}"
+          mkdir -p "$dir" dist
+          cp target/release/ravune target/release/ravune-host target/release/ravune-mcp README.md LICENSE-MIT LICENSE-APACHE "$dir/"
+          tar -czf "dist/$dir.tar.gz" "$dir"
+          # for copies of Phasor 0.8: their updater only takes phasor* programs
+          legacy="phasor-$VERSION-${{ matrix.name }}"
+          mkdir -p "$legacy"
+          for b in "" -host -mcp; do cp "target/release/ravune$b" "$legacy/phasor$b"; done
+          tar -czf "dist/$legacy.tar.gz" "$legacy"
+
+      - name: Attach to the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "$TAG" dist/* --clobber

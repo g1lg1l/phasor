@@ -1,0 +1,35 @@
+[package]
+name = "ravune"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+assert_no_alloc = "1.1.2"
+# no egui fallback fonts or system-font scan: we ship three small fonts
+eframe = { version = "0.37.0", default-features = false, features = ["accesskit", "clipboard", "links", "persistence", "wgpu", "wayland", "x11"] }
+ravune-core = { version = "0.9.0-beta", path = "../ravune-core" }
+ravune-engine = { version = "0.9.0-beta", path = "../ravune-engine" }
+midir = "0.11.1"
+ravune-bridge = { version = "0.9.0-beta", path = "../ravune-bridge" }
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.154"
+rfd = "0.17.2"
+# export: FLAC (pure Rust) and Ogg Vorbis (aoTuV + libogg, BSD); MP3 goes through ffmpeg if installed
+flacenc = { version = "0.5.1", default-features = false }
+vorbis_rs = { version = "0.5.6", default-features = false }
+ron = "0.12.2"
+# docs screenshots (RAVUNE_CAPTURE_TO): already in the tree through eframe
+png = "0.18.1"
+# DAWproject import / export: a zip with XML inside (MIT; MIT OR Apache-2.0)
+zip = { version = "9.1.2", default-features = false, features = ["deflate-flate2"] }
+roxmltree = "0.21.2"
+# scripts (M8): Luau, sandboxed, built from source (MIT)
+mlua = { version = "0.12.2", features = ["luau", "serialize"] }
+# online sounds (M6): plain blocking HTTPS on a worker thread, rustls + ring
+ureq = { version = "3.5.0", default-features = false, features = ["rustls", "json"] }
+
+# the .exe's icon (build.rs): MIT, Windows only
+[target.'cfg(windows)'.build-dependencies]
+winresource = "0.1.34"

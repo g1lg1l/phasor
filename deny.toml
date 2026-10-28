@@ -1,0 +1,35 @@
+# Ravune is MIT OR Apache-2.0: only permissive dependency licenses are allowed (docs/PLAN.md §4).
+# GPL/LGPL appear in the tree only as "OR" alternatives, which cargo-deny resolves to the permissive side.
+
+[licenses]
+allow = [
+    "MIT",
+    "Apache-2.0",
+    "Apache-2.0 WITH LLVM-exception",
+    "BSD-1-Clause",
+    "BSD-2-Clause",
+    "BSD-3-Clause",
+    "BSL-1.0",
+    "ISC",
+    "0BSD",
+    "Unicode-3.0",
+    "Unlicense",
+    "Zlib",
+    # file-level copyleft (symphonia decoders): fine as long as we don't modify their files
+    "MPL-2.0",
+    # webpki-roots: Mozilla's root certificates as data (online sounds over HTTPS)
+    "CDLA-Permissive-2.0",
+]
+
+[licenses.private]
+ignore = true
+
+[advisories]
+# "Unmaintained" notices on transitive crates with no maintained replacement yet. None is a
+# vulnerability; drop each line once the crate that pulls it in moves on.
+ignore = [
+    { id = "RUSTSEC-2026-0192", reason = "ttf-parser: egui's font stack (epaint)" },
+    { id = "RUSTSEC-2026-0370", reason = "zvariant: zbus, via accesskit on Linux" },
+    { id = "RUSTSEC-2026-0371", reason = "zbus_names: zbus, via accesskit on Linux" },
+    { id = "RUSTSEC-2026-0372", reason = "zvariant_derive: zbus, via accesskit on Linux" },
+]

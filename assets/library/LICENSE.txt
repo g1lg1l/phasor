@@ -1,0 +1,402 @@
+Ravune built-in library
+
+All of it is CC0 1.0 Universal: use it in anything, commercial or not, no credit needed.
+https://creativecommons.org/publicdomain/zero/1.0/
+
+The sounds at the top of this folder were synthesized from scratch by
+crates/ravune-engine/examples/make_kit.rs: no recordings, no third-party samples. The Ravune
+contributors waive all copyright and related rights to them (CC0).
+
+The sounds in the subfolders are recordings their authors released under CC0, from Freesound
+(found through Openverse; the HQ previews) and the Versilian Community Sample Library (VCSL).
+They were converted to 44.1 kHz 16-bit WAV, trimmed and peak-normalized. The genre packs are
+FLAC instead (Drum & Bass, Liquid DnB, Techno, Hardgroove and IDM in mono; House and Electronic
+in stereo where the recording is), their loops cut to whole bars at the tempo in their name.
+With thanks:
+
+808 & Bass/808-distorted-a.wav
+    "808 Altered Beast - A.wav" by 8bitmyketison · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/8bitmyketison/sounds/699692
+808 & Bass/sub-bass-bomb.wav
+    "sub bass 2 secondsssss.wav" by uzerx · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/uzerx/sounds/59538
+808 & Bass/sub-drop-c.wav
+    "SUB OCEANO C.wav" by uzerx · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/uzerx/sounds/81147
+808 & Bass/sub-kick-clicky.wav
+    "Clicky Sub Kick Drum" by TheEndOfACycle · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/TheEndOfACycle/sounds/673512
+Claps/clap-808-dry.wav
+    "Clap-13.wav" by Sorinious_Genious · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Sorinious_Genious/sounds/561113
+Claps/clap-909-snare-layer.wav
+    "909 Snare + Clap" by ani_music · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/ani_music/sounds/165326
+Claps/clap-acoustic-solo.wav
+    "VCSL: SoloClap_vl3.wav" by Versilian Studios LLC (VCSL) · CC0 1.0 · https://github.com/sgossner/VCSL/blob/master/Idiophones/Struck%20Idiophones/Claps/SoloClap_vl3.wav
+Claps/clap-acoustic.wav
+    "VCSL: Clap_rr1.wav" by Versilian Studios LLC (VCSL) · CC0 1.0 · https://github.com/sgossner/VCSL/blob/master/Idiophones/Struck%20Idiophones/Claps/Clap_rr1.wav
+Claps/clap-electronic-short.wav
+    "Anu Clap 09.wav" by pomeroyjoshua · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/pomeroyjoshua/sounds/513421
+Claps/clap-electronic-snappy.wav
+    "Anu Clap 08.wav" by pomeroyjoshua · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/pomeroyjoshua/sounds/513416
+Cymbals/cymbal-bell-acoustic.wav
+    "VCSL: susCymb1_hit_bell_fff1.wav" by Versilian Studios LLC (VCSL) · CC0 1.0 · https://github.com/sgossner/VCSL/blob/master/Idiophones/Struck%20Idiophones/Suspended%20Cymbal%201/susCymb1_hit_bell_fff1.wav
+Cymbals/cymbal-china.wav
+    "crash - china cymbal 1.wav" by Logicogonist · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Logicogonist/sounds/264532
+Cymbals/cymbal-crash-acoustic.wav
+    "VCSL: susCymb1_hit_stick_f1.wav" by Versilian Studios LLC (VCSL) · CC0 1.0 · https://github.com/sgossner/VCSL/blob/master/Idiophones/Struck%20Idiophones/Suspended%20Cymbal%201/susCymb1_hit_stick_f1.wav
+Cymbals/cymbal-crash-fm.wav
+    "FM Crash Cymbal 1" by Terry93D · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Terry93D/sounds/336429
+Cymbals/cymbal-ride-acoustic.wav
+    "ride n1.wav" by Logicogonist · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Logicogonist/sounds/209900
+Cymbals/cymbal-ride-bell-short.wav
+    "ride bell 2 brief" by Logicogonist · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Logicogonist/sounds/810863
+FX/impact-big.wav
+    "Impact Hit at soft but big material" by doudar41 · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/doudar41/sounds/728515
+FX/impact-metal-pipe.wav
+    "ANI Big Pipe Hit" by ani_music · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/ani_music/sounds/244983
+FX/reverse-cymbal.wav
+    "reverse cymbal.wav" by John Rayson · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/John%20Rayson/sounds/23127
+FX/riser-energy.wav
+    "Energy Riser" by magnuswaker · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/magnuswaker/sounds/522095
+FX/riser-short.wav
+    "Riser" by Rizzard · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Rizzard/sounds/561207
+Hi-hats/hihat-closed-808.wav
+    "FD808A HiHat closed.wav" by Uberproduktion · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Uberproduktion/sounds/455639
+Hi-hats/hihat-closed-acoustic.wav
+    "VCSL: HiHat_HitC_v3_rr1_Mid.wav" by Versilian Studios LLC (VCSL) · CC0 1.0 · https://github.com/sgossner/VCSL/blob/master/Idiophones/Struck%20Idiophones/Hi-Hat%20Cymbal/HiHat_HitC_v3_rr1_Mid.wav
+Hi-hats/hihat-closed-minipops.wav
+    "Korg Mini Pops - closed hihat" by voxlab · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/voxlab/sounds/662743
+Hi-hats/hihat-half-open-acoustic.wav
+    "VCSL: HiHat_HitLoose_rr1_Mid.wav" by Versilian Studios LLC (VCSL) · CC0 1.0 · https://github.com/sgossner/VCSL/blob/master/Idiophones/Struck%20Idiophones/Hi-Hat%20Cymbal/HiHat_HitLoose_rr1_Mid.wav
+Hi-hats/hihat-open-acoustic.wav
+    "VCSL: HiHat_HitO_rr1_Mid.wav" by Versilian Studios LLC (VCSL) · CC0 1.0 · https://github.com/sgossner/VCSL/blob/master/Idiophones/Struck%20Idiophones/Hi-Hat%20Cymbal/HiHat_HitO_rr1_Mid.wav
+Hi-hats/hihat-open-minipops.wav
+    "Korg Mini Pops - open-hihat" by voxlab · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/voxlab/sounds/662751
+Hi-hats/hihat-pedal-acoustic.wav
+    "VCSL: HiHat_Close_rr1_Mid.wav" by Versilian Studios LLC (VCSL) · CC0 1.0 · https://github.com/sgossner/VCSL/blob/master/Idiophones/Struck%20Idiophones/Hi-Hat%20Cymbal/HiHat_Close_rr1_Mid.wav
+Kicks/kick-808-deep.wav
+    "808 Deep kick" by EKVelika · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/EKVelika/sounds/208447
+Kicks/kick-808.wav
+    "808 Kick (wav format)" by Elektronikz · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Elektronikz/sounds/190942
+Kicks/kick-909-distorted.wav
+    "909Kickdist.wav" by Blackie666 · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Blackie666/sounds/84729
+Kicks/kick-acoustic.wav
+    "Acoustic Drum Kick.wav" by Sound_Bar_KK · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Sound_Bar_KK/sounds/424662
+Kicks/kick-house.wav
+    "House Kick 5 (Less Deep Sub)" by Mattc90 · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Mattc90/sounds/351917
+Kicks/kick-trap-short.wav
+    "Trap Kick 1" by muffin3k · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/muffin3k/sounds/501553
+Percussion/bongo-high.wav
+    "VCSL: BongoH_Hit1_v2_rr1_Mid.wav" by Versilian Studios LLC (VCSL) · CC0 1.0 · https://github.com/sgossner/VCSL/blob/master/Membranophones/Struck%20Membranophones/Bongos/BongoH_Hit1_v2_rr1_Mid.wav
+Percussion/claves.wav
+    "VCSL: Claves1_Hit_v2_rr1_Mid.wav" by Versilian Studios LLC (VCSL) · CC0 1.0 · https://github.com/sgossner/VCSL/blob/master/Idiophones/Struck%20Idiophones/Claves/Claves1_Hit_v2_rr1_Mid.wav
+Percussion/conga-open.wav
+    "VCSL: Conga_HitN_v2_rr1_Sum.wav" by Versilian Studios LLC (VCSL) · CC0 1.0 · https://github.com/sgossner/VCSL/blob/master/Membranophones/Struck%20Membranophones/Conga/Conga_HitN_v2_rr1_Sum.wav
+Percussion/cowbell-acoustic.wav
+    "VCSL: Cowbell1_Normal_v3_rr1_Mid.wav" by Versilian Studios LLC (VCSL) · CC0 1.0 · https://github.com/sgossner/VCSL/blob/master/Idiophones/Struck%20Idiophones/Cowbells/Cowbell1_Normal_v3_rr1_Mid.wav
+Percussion/rim-cross-stick.wav
+    "VCSL: Snare3M_Xstick_v2_rr1_Mid.wav" by Versilian Studios LLC (VCSL) · CC0 1.0 · https://github.com/sgossner/VCSL/blob/master/Membranophones/Struck%20Membranophones/Snare%20Drum%2C%20Modern%202/Snare3M_Xstick_v2_rr1_Mid.wav
+Percussion/shaker-short.wav
+    "VCSL: Mid_ShakerDouble_Down_rr1.wav" by Versilian Studios LLC (VCSL) · CC0 1.0 · https://github.com/sgossner/VCSL/blob/master/Idiophones/Struck%20Idiophones/Shaker%2C%20Small/Mid_ShakerDouble_Down_rr1.wav
+Percussion/shaker-slap.wav
+    "VCSL: Mid_Shaker_Slap_rr1.wav" by Versilian Studios LLC (VCSL) · CC0 1.0 · https://github.com/sgossner/VCSL/blob/master/Idiophones/Struck%20Idiophones/Shaker%2C%20Small/Mid_Shaker_Slap_rr1.wav
+Percussion/tambourine-hit.wav
+    "VCSL: Tamb1_Hit_v2_rr1_Mid.wav" by Versilian Studios LLC (VCSL) · CC0 1.0 · https://github.com/sgossner/VCSL/blob/master/Idiophones/Struck%20Idiophones/Tambourine%201/Tamb1_Hit_v2_rr1_Mid.wav
+Snares/snare-808.wav
+    "FD808A Snare.wav" by Uberproduktion · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Uberproduktion/sounds/455642
+Snares/snare-acoustic-modern.wav
+    "VCSL: Snare2_HitSN_v7_rr1_Mid.wav" by Versilian Studios LLC (VCSL) · CC0 1.0 · https://github.com/sgossner/VCSL/blob/master/Membranophones/Struck%20Membranophones/Snare%20Drum%2C%20Modern%201/Snare2_HitSN_v7_rr1_Mid.wav
+Snares/snare-acoustic-tight.wav
+    "VCSL: Snare3M_HitSN_v4_rr1_Mid.wav" by Versilian Studios LLC (VCSL) · CC0 1.0 · https://github.com/sgossner/VCSL/blob/master/Membranophones/Struck%20Membranophones/Snare%20Drum%2C%20Modern%202/Snare3M_HitSN_v4_rr1_Mid.wav
+Snares/snare-electronic.wav
+    "Electronic Snare Drum 4" by IanStarGem · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/IanStarGem/sounds/275224
+Snares/snare-trap.wav
+    "Trap Snare 1" by muffin3k · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/muffin3k/sounds/493966
+Toms/tom-808-high.wav
+    "FD808A Tom hi.wav" by Uberproduktion · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Uberproduktion/sounds/455645
+Toms/tom-808-low.wav
+    "FD808A Tom low.wav" by Uberproduktion · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Uberproduktion/sounds/455643
+Toms/tom-floor-acoustic.wav
+    "Pearl MLX 16 Floor Tom.wav" by stuntstudio · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/stuntstudio/sounds/221484
+Toms/tom-high-acoustic.wav
+    "VCSL: TomH_HitS_v3_rr1_Mid.wav" by Versilian Studios LLC (VCSL) · CC0 1.0 · https://github.com/sgossner/VCSL/blob/master/Membranophones/Struck%20Membranophones/Tom%201/Stick/TomH_HitS_v3_rr1_Mid.wav
+Toms/tom-low-acoustic.wav
+    "VCSL: TomL_HitS_v3_rr1_Mid.wav" by Versilian Studios LLC (VCSL) · CC0 1.0 · https://github.com/sgossner/VCSL/blob/master/Membranophones/Struck%20Membranophones/Tom%202/Stick/TomL_HitS_v3_rr1_Mid.wav
+Vocals/vox-chop-c4.wav
+    "Vocal Chops, Female Dry" by f-r-a-g-i-l-e · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/f-r-a-g-i-l-e/sounds/571242
+Vocals/vox-hit-a3.wav
+    "Vocal Chops, Female Dry" by f-r-a-g-i-l-e · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/f-r-a-g-i-l-e/sounds/571242
+Vocals/vox-hit-d4.wav
+    "Vocal Chops, Female Dry" by f-r-a-g-i-l-e · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/f-r-a-g-i-l-e/sounds/571242
+Drum & Bass/bassloop-neuro-172.flac
+    "DABROmusic_DNB_BassLoop_172[F]_Neurofunk_001.wav" by DABROmusic · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/DABROmusic/sounds/266734
+Drum & Bass/break-rolling-174.flac
+    "Break_Dnb_174_Bpm_02.wav" by hardwareshaba · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/hardwareshaba/sounds/337824
+Drum & Bass/break-stepper-175.flac
+    "dnb_beat_2_Normal_175.wav" by dahovv · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/dahovv/sounds/65769
+Drum & Bass/break-tight-174.flac
+    "Break_Dnb_174_Bpm_01.wav" by hardwareshaba · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/hardwareshaba/sounds/337825
+Drum & Bass/break-twostep-175.flac
+    "dnb_beat_1_175.wav" by dahovv · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/dahovv/sounds/65768
+Drum & Bass/hat-closed.flac
+    "Hat_174_Bpm_01.wav" by hardwareshaba · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/hardwareshaba/sounds/337823
+Drum & Bass/kick-punchy.flac
+    "Kick_Drum_Hard_#3.wav" by Renovatio871 · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Renovatio871/sounds/190551
+Drum & Bass/reese-dark-fs.flac
+    "Dark Reese F#.wav" by TechGeekMusic · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/TechGeekMusic/sounds/353269
+Drum & Bass/reese-detuned.flac
+    "reese 413th.wav" by kival · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/kival/sounds/202765
+Drum & Bass/ride.flac
+    "Ride Cymbal" by snafic · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/snafic/sounds/732556
+Drum & Bass/snare-crack.flac
+    "Snare DnB 1.aif" by kaonaya · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/kaonaya/sounds/131363
+Drum & Bass/snare-dirty.flac
+    "Dub/Dnb/Glitch-Hop Koan Style Snare" by Hybrid_V · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Hybrid_V/sounds/319612
+Drum & Bass/snare-tight.flac
+    "DnB Snare 01" by PotatoHamburger · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/PotatoHamburger/sounds/216045
+Drum & Bass/stab-neuro.flac
+    "Neuro Bass Stab" by dpren · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/dpren/sounds/248141
+Hardgroove/bongo-high.flac
+    "Urban Bongo Hi" by tripjazz · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/tripjazz/sounds/509647
+Hardgroove/bongo-loop-martillo-145.flac
+    "bongo_martillo_145bpm.flac" by KJose · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/KJose/sounds/610359
+Hardgroove/bongo-low.flac
+    "Bongos (LowBongo2.wav)" by Samulis · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Samulis/sounds/375291
+Hardgroove/conga-low-808.flac
+    "FD808A Conga low.wav" by Uberproduktion · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Uberproduktion/sounds/455637
+Hardgroove/cowbell-harsh.flac
+    "Cowbell.wav" by Neotone · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Neotone/sounds/75338
+Hardgroove/metal-clang.flac
+    "metal-touch.wav" by newagesoup · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/newagesoup/sounds/337853
+Hardgroove/metal-hit.flac
+    "Metallic hit" by _jack · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/_jack/sounds/240213
+Hardgroove/perc-loop-noise-145.flac
+    "noiseenvperc10_145bpm.wav" by wgwgsa · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/wgwgsa/sounds/568448
+Hardgroove/perc-loop-ringy-140.flac
+    "Ringy loop 01.wav" by Nate_the_late · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Nate_the_late/sounds/612957
+Hardgroove/perc-loop-wood-145.flac
+    "armoire_rhythm_145.wav" by noisymichael · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/noisymichael/sounds/617258
+Hardgroove/rim-tight.flac
+    "The Exponent - Rimshot 01.wav" by exponent1 · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/exponent1/sounds/689143
+Hardgroove/shaker-crunchy.flac
+    "Crunchy Shaker Loop 152 BPM.wav" by 8bitmyketison · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/8bitmyketison/sounds/700906
+Hardgroove/tom-mid.flac
+    "mid tom.wav" by Logicogonist · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Logicogonist/sounds/209879
+Hardgroove/tom-tribal-floor.flac
+    "Tomtom6_TribalFloor.wav" by hello_flowers · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/hello_flowers/sounds/30822
+Hardgroove/vox-hey-low.flac
+    "HEY VERY LOW 4.WAV" by metrostock99 · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/metrostock99/sounds/345083
+IDM/blip-fm-ding.flac
+    "Quiz Gameshow Correct Ding 01.mp3" by craigscottuk · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/craigscottuk/sounds/644945
+IDM/blip-fm-ping.flac
+    "Quiz Gameshow Correct Ping 03.mp3" by craigscottuk · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/craigscottuk/sounds/644946
+IDM/blip-reverse.flac
+    "Reverse Blip" by Breviceps · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Breviceps/sounds/450612
+IDM/click-contact.flac
+    "Click 01.wav" by gusgus26 · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/gusgus26/sounds/415089
+IDM/click-glitch.flac
+    "Glitch Click.wav" by potentjello · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/potentjello/sounds/194105
+IDM/glitch-analogue-burst.flac
+    "Analogue Glitches.wav" by RutgerMuller · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/RutgerMuller/sounds/50695
+IDM/glitch-databend.flac
+    "Glitch" by smokevhstapes · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/smokevhstapes/sounds/347180
+IDM/glitch-hit.flac
+    "Glitch 01" by JacksonMiller0 · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/JacksonMiller0/sounds/237607
+IDM/glitch-stutter.flac
+    "glitched sound 1.wav" by Elnosos · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Elnosos/sounds/424375
+IDM/kick-crushed.flac
+    "Crushed Kick 014.wav" by shpira · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/shpira/sounds/560415
+IDM/loop-glitch-120.flac
+    "Glitch beat 120 bpm" by gusgus26 · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/gusgus26/sounds/416277
+IDM/loop-glitch-5-8-120.flac
+    "5/8 glitch beat.wav" by gusgus26 · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/gusgus26/sounds/128657
+IDM/loop-halftime-142.flac
+    "Schnetzlbeat_142.aif" by LogicMoon · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/LogicMoon/sounds/184467
+IDM/rim-crushed.flac
+    "Crushed rimshot 005.wav" by shpira · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/shpira/sounds/560422
+IDM/snare-chiptune.flac
+    "Mega Chiptune Snare #1" by FairhavenCollection · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/FairhavenCollection/sounds/397044
+IDM/snare-crushed.flac
+    "Crushed Snare 808s 036.wav" by shpira · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/shpira/sounds/560427
+IDM/texture-granular-insect.flac
+    "tiny_space_insect.aif" by joseph.larralde · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/joseph.larralde/sounds/352422
+IDM/texture-granular-metal.flac
+    "Rubbing Metal - Granular 01" by Aerotek · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Aerotek/sounds/437519
+Liquid DnB/bass-sub-e.flac
+    "Sub Bass 7 - E.mp3" by blakengouda · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/blakengouda/sounds/509993
+Liquid DnB/break-liquid-172.flac
+    "LCA_172_Drum_06_Full.wav" by Loop_Cult · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Loop_Cult/sounds/484614
+Liquid DnB/break-liquid-174.flac
+    "LCA_174_Drum_02_Full.wav" by Loop_Cult · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Loop_Cult/sounds/484618
+Liquid DnB/chord-epiano-minor9-a.flac
+    "neo-soul-chords.wav" by wakz · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/wakz/sounds/420598
+Liquid DnB/chord-epiano-minor9-b.flac
+    "neo-soul-chords.wav" by wakz · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/wakz/sounds/420598
+Liquid DnB/chord-rhodes-c.flac
+    "Rhodes C chord progression.flac" by TheSamplesFactory · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/TheSamplesFactory/sounds/431733
+Liquid DnB/keys-bell-c3.flac
+    "Piano Bell Sound (C3).wav" by Cloud-10 · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Cloud-10/sounds/632255
+Liquid DnB/keys-piano-gate-172.flac
+    "LCA_172_Keys_G_PianoGate.wav" by Loop_Cult · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Loop_Cult/sounds/484612
+Liquid DnB/pad-airy-bmin.flac
+    "Digital Memories Athmo Pad Chord _ Bmin" by voxlab · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/voxlab/sounds/713598
+Liquid DnB/pad-soft-gsharp-sus.flac
+    "Soft Athmo Pad Chord G#13sus4" by voxlab · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/voxlab/sounds/623047
+Liquid DnB/rim-soft.flac
+    "Rimshot (sweet)" by Sajmund · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Sajmund/sounds/132418
+Liquid DnB/shaker-egg.flac
+    "shaker1.wav" by Sycopation · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Sycopation/sounds/272010
+Liquid DnB/snare-soft.flac
+    "Gui_DRUM_SNARE_soft.wav" by menegass · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/menegass/sounds/100059
+Liquid DnB/texture-vocoded.flac
+    "Vocoded Texture.wav" by jdagenet · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/jdagenet/sounds/395430
+Techno/clap-snare.flac
+    "909 Snare + Clap" by ani_music · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/ani_music/sounds/165326
+Techno/fx-hit-thud.flac
+    "Big Hit.wav" by jputman · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/jputman/sounds/330741
+Techno/hat-closed-analog.flac
+    "Korg Mini Pops - closed hihat" by voxlab · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/voxlab/sounds/662743
+Techno/hat-open-analog.flac
+    "Korg Mini Pops - open-hihat" by voxlab · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/voxlab/sounds/662751
+Techno/hat-open-short.flac
+    "Mini 909ish Open Hat" by Rodrigo The Mad · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Rodrigo%20The%20Mad/sounds/165028
+Techno/hatloop-128.flac
+    "Hihat Loop 128 BPM.wav" by Cloud-10 · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Cloud-10/sounds/633749
+Techno/hatloop-chug-130.flac
+    "Chug Hi-hat Loop" by Bitbeast · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Bitbeast/sounds/274512
+Techno/kick-distorted.flac
+    "new hard techno kick #1" by leverneum · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/leverneum/sounds/733622
+Techno/kick-subby.flac
+    "Subby Kick.wav" by Walter_Odington · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Walter_Odington/sounds/25649
+Techno/kick-tight.flac
+    "J.H. DR Techno Kick 2 (A 140 bpm).wav" by Johnnie_Holiday · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Johnnie_Holiday/sounds/703787
+Techno/perc-loop-bleep-128.flac
+    "DW Loop 037.wav" by davepape · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/davepape/sounds/28325
+Techno/perc-loop-dub-128.flac
+    "Techno percussion loop Dubby 128bpm" by syntheffects · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/syntheffects/sounds/569587
+Techno/perc-loop-glitch-130.flac
+    "N-DeeLoop1.wav" by MaxNDee · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/MaxNDee/sounds/58148
+Techno/ride-edge.flac
+    "Ride Cymbal 1 Edge" by Sajmund · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Sajmund/sounds/132281
+Techno/rumble-kick-128.flac
+    "Big Room Techno Rumble Kick F (JH).wav" by Johnnie_Holiday · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Johnnie_Holiday/sounds/652522
+Techno/stab-chord.flac
+    "Tech House Chord" by Teacoma · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Teacoma/sounds/415601
+Electronic/808-distorted.flac
+    "Distorted 808.wav" by dantheman5491 · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/dantheman5491/sounds/47928
+Electronic/808-sub-c.flac
+    "808 bass sub in C sustained.wav" by mm11x9 · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/mm11x9/sounds/484305
+Electronic/arp-chords-120.flac
+    "120 bpm rising square arpegiated chords" by jackieAZ · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/jackieAZ/sounds/346374
+Electronic/arp-glassy.flac
+    "a5sus2 arpeggio stab glassy synth.wav" by @realdavidfloat · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/@realdavidfloat/sounds/418932
+Electronic/arp-loop-120.flac
+    "arp line 120.aif" by LogicMoon · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/LogicMoon/sounds/175379
+Electronic/arp-pluck-120.flac
+    "Happy Trance - Plucked Arpeggiator - 120bpm" by elaineaeris · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/elaineaeris/sounds/509391
+Electronic/bass-moog.flac
+    "Resonant analog synth bass" by Garzul · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Garzul/sounds/213657
+Electronic/bass-muted.flac
+    "Thick Muted Synth Bass" by ani_music · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/ani_music/sounds/165314
+Electronic/bass-saw.flac
+    "SYNTH BASS 0101.wav" by zgump · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/zgump/sounds/72999
+Electronic/bass-wobble.flac
+    "Synth - Bass Dubstep.wav" by Wax_vibe · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Wax_vibe/sounds/588293
+Electronic/chord-bm.flac
+    "analogue synth chord Bm.wav" by MieliTietty · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/MieliTietty/sounds/536819
+Electronic/chords-bouncy-132.flac
+    "bouncy synth chords 132Bpm.wav" by opal.wav · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/opal.wav/sounds/618078
+Electronic/chords-deep-120.flac
+    "deep chords 120.aif" by LogicMoon · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/LogicMoon/sounds/175378
+Electronic/downlifter-lunar.flac
+    "Lunar Downlifter FX 4.wav" by maqsim · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/maqsim/sounds/172157
+Electronic/downlifter-short.flac
+    "downlifter 2.wav" by neezen. · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/neezen./sounds/482146
+Electronic/drumloop-120.flac
+    "[Drumloop] 120 bpm edm drum loop 027" by waveplaySFX · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/waveplaySFX/sounds/392215
+Electronic/drumloop-130.flac
+    "[Drumloop] 130 bpm edm drum loop 000" by waveplaySFX · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/waveplaySFX/sounds/187855
+Electronic/impact-boom.flac
+    "Micheal Bay Hit" by Kinoton · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Kinoton/sounds/347561
+Electronic/impact-soft.flac
+    "Impact Hit at soft but big material" by doudar41 · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/doudar41/sounds/728515
+Electronic/lead-metallic.flac
+    "Metallic Synth Lead 1" by Hajisounds · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Hajisounds/sounds/669762
+Electronic/lead-saw.flac
+    "Synth Lead 1" by Hajisounds · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Hajisounds/sounds/669752
+Electronic/pad-dmin7.flac
+    "Octopussys Garden - Synth Pad - Dmin7 chord" by voxlab · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/voxlab/sounds/592534
+Electronic/pad-iron-f.flac
+    "Synth Pad 'Molten Iron' in F3" by MathewHenry · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/MathewHenry/sounds/699874
+Electronic/pad-saws-dmin7.flac
+    "ShimmeringSaws - Synth Pad - Dmin7 chord" by voxlab · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/voxlab/sounds/592533
+Electronic/pluck-loop.flac
+    "Plucked Synth Loop 1.wav" by Stereo Surgeon · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Stereo%20Surgeon/sounds/261214
+Electronic/reverse-short.flac
+    "reverse fx 9.wav" by neezen. · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/neezen./sounds/503799
+Electronic/riser-noise.flac
+    "Percusive Noise Riser.wav" by Stereo Surgeon · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Stereo%20Surgeon/sounds/261415
+Electronic/riser-reverse.flac
+    "reverse fx 8.wav" by neezen. · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/neezen./sounds/503807
+Electronic/stab-charged.flac
+    "Charged Synth Stab 2" by Stereo Surgeon · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Stereo%20Surgeon/sounds/265676
+Electronic/stab-synth.flac
+    "Synth Stab 1" by Stereo Surgeon · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Stereo%20Surgeon/sounds/265675
+Electronic/sweep-noise.flac
+    "White Noise Sweep" by spongemas765 · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/spongemas765/sounds/235401
+Electronic/zap-8bit.flac
+    "Zap_C_03" by cabled_mess · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/cabled_mess/sounds/351000
+Electronic/zap-low.flac
+    "Laser Zap Low.wav" by Lynx_5969 · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Lynx_5969/sounds/418223
+Electronic/zap-psy.flac
+    "psy squeak zap" by skarznstryfe · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/skarznstryfe/sounds/131251
+House/bass-donk-f.flac
+    "Donk Bass (F)" by Chameon · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Chameon/sounds/413423
+House/bassline-124.flac
+    "Minimal Dance Bass.wav" by Teacoma · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Teacoma/sounds/362755
+House/bassline-funky-126.flac
+    "Deep Funky Bassline" by Teacoma · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Teacoma/sounds/416303
+House/bongo-loop-120.flac
+    "120bpm_tumbao_on_bongos_1.flac" by KJose · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/KJose/sounds/610356
+House/chord-stab.flac
+    "ASBS - House Chord 012.wav" by zgump · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/zgump/sounds/128127
+House/chords-loop-120.flac
+    "HouseChords1.wav" by Slanted · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Slanted/sounds/510229
+House/chords-m1-126.flac
+    "deep house chords (consolidated).wav" by SamplingSamTheMarylandMan · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/SamplingSamTheMarylandMan/sounds/467501
+House/clap-house.flac
+    "House Clap 1.wav" by Akssu · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Akssu/sounds/465803
+House/clap-tight.flac
+    "clap 2.wav" by kaonaya · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/kaonaya/sounds/131331
+House/conga-loop-120.flac
+    "bongos&congas_20240429_1-7" by Sycopation · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Sycopation/sounds/734155
+House/hat-closed.flac
+    "[Drums] hi hat 2" by waveplaySFX · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/waveplaySFX/sounds/250532
+House/hatloop-126.flac
+    "hats.wav" by arnasarnas · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/arnasarnas/sounds/467523
+House/kick-deep.flac
+    "Deep House Kick Drum 2" by Mattc90 · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Mattc90/sounds/347624
+House/kick-punchy.flac
+    "House/trance kick" by Rodrigo The Mad · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Rodrigo%20The%20Mad/sounds/137722
+House/kick-sub.flac
+    "House Kick 5 (Less Deep Sub)" by Mattc90 · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Mattc90/sounds/351917
+House/kickloop-124.flac
+    "Kick Loop 5" by Stereo Surgeon · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Stereo%20Surgeon/sounds/266093
+House/loop-funky-126.flac
+    "Funky House 2 126.wav" by Ceox · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Ceox/sounds/128673
+House/loop-funky-128.flac
+    "Funky House 1 128.wav" by Ceox · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Ceox/sounds/128674
+House/loop-simple-120.flac
+    "Simple House Beat.wav" by Teacoma · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Teacoma/sounds/351305
+House/maraca.flac
+    "Single-maraca-shake.wav" by hollandm · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/hollandm/sounds/692810
+House/organ-rave.flac
+    "ORGAN MID.wav" by CHARLIESMILER · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/CHARLIESMILER/sounds/686033
+House/organ-stab.flac
+    "Organ Stab Spiryt 2" by ovvcuxs · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/ovvcuxs/sounds/565073
+House/piano-loop-120.flac
+    "Deep House Loop - Piano Chords .wav" by Duisterwho · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Duisterwho/sounds/645759
+House/ride-ping.flac
+    "20'' ping ride hit soft.aif" by trivialAccapella · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/trivialAccapella/sounds/425453
+House/shaker.flac
+    "Shaker_2.wav" by thehorsevalse · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/thehorsevalse/sounds/615390
+House/stab-trumpet.flac
+    "Tech House Trumpet" by Teacoma · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/Teacoma/sounds/415599
+House/vox-loop-128.flac
+    "vocal chop loop 1 [C#Minor] [128bpm]" by deadrobotmusic · CC0 1.0 (Freesound, via Openverse) · https://freesound.org/people/deadrobotmusic/sounds/555917

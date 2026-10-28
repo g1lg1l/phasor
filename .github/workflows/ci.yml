@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch: # manual runs also build on macOS (10x minutes on private repos)
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ${{ github.event_name == 'workflow_dispatch' && fromJSON('["ubuntu-latest","windows-latest","macos-latest"]') || fromJSON('["ubuntu-latest","windows-latest"]') }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
+      - uses: Swatinem/rust-cache@v2
+      - name: Linux audio/MIDI headers, and a display for the editor window test
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libasound2-dev xvfb
+      - run: cargo clippy --workspace --all-targets -- -D warnings
+      - run: ${{ runner.os == 'Linux' && 'xvfb-run -a ' || '' }}cargo test --workspace
+
+  rules:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Colors live only in the theme (docs/THEMING.md §8)
+        run: |
+          if grep -rn "Color32::" crates --include=*.rs | grep -v "^crates/ravune/src/theme.rs:"; then
+            echo "::error::Use theme tokens instead of Color32 literals"; exit 1
+          fi
+      - uses: EmbarkStudios/cargo-deny-action@v2
+        with:
+          command: check licenses

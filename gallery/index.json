@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Groove Tools",
+    "version": "1.0.0",
+    "author": "Ravune",
+    "about": "Scripts for the piano roll (ghost notes, three against four, rolling hats) and a Dub Techno template at 118 BPM.",
+    "url": "https://raw.githubusercontent.com/g1lg1l/ravune/main/gallery/groove-tools.ravunext"
+  },
+  {
+    "name": "Night Themes",
+    "version": "1.0.0",
+    "author": "Ravune",
+    "about": "Three themes: Amber Night (warm, low light), Deep Sea (teal on blue-black) and Paper (a light one for daytime).",
+    "url": "https://raw.githubusercontent.com/g1lg1l/ravune/main/gallery/night-themes.ravunext"
+  }
+]
