@@ -10,6 +10,7 @@ use std::f32::consts::PI;
 use std::sync::Arc;
 
 use crate::Sample;
+use crate::sample::{read, taps};
 
 /// The longest grain: 40 ms at 192 kHz.
 const MAX_GRAIN: usize = 7680;
@@ -160,39 +161,49 @@ impl Stretcher {
             // the last grain carried on: what this one should sound like where they overlap
             let target = self.last + hop as f64 * step;
             let reach = (0.010 * sample.rate) as i64;
+            // every 4th frame of it, read once
+            let mut want = [0.0f32; MAX_GRAIN / 8];
+            let probes = hop.div_ceil(4);
+            for (k, w) in want[..probes].iter_mut().enumerate() {
+                *w = at(target + (4 * k) as f64 * step);
+            }
             let fit = |d: i64| {
                 let from = self.next + d as f64;
                 let (mut dot, mut power) = (0.0f32, 1e-9f32);
-                for k in (0..hop).step_by(4) {
-                    let a = at(from + k as f64 * step);
-                    dot += a * at(target + k as f64 * step);
+                for (k, w) in want[..probes].iter().enumerate() {
+                    let a = at(from + (4 * k) as f64 * step);
+                    dot += a * w;
                     power += a * a;
                 }
                 dot / power.sqrt()
             };
             // nearest first, so silence (all equal) stays on the beat
-            let best = (0..=reach / 2).flat_map(|k| [2 * k, -2 * k]).filter(|d| self.next + (*d as f64) >= 0.0).fold((0, f32::MIN), |best, d| {
-                let f = fit(d);
-                if f > best.1 { (d, f) } else { best }
-            });
-            self.next + best.0 as f64
+            let best = |lags: &mut dyn Iterator<Item = i64>| {
+                lags.filter(|d| self.next + (*d as f64) >= 0.0).fold((0, f32::MIN), |best, d| {
+                    let f = fit(d);
+                    if f > best.1 { (d, f) } else { best }
+                })
+            };
+            // coarse, then to the frame around the best: a fine search over all 10 ms took
+            // most of a busy project's time, all of it in the blocks where grains start
+            let (coarse, _) = best(&mut (0..=reach / 8).flat_map(|k| [8 * k, -8 * k]));
+            let (fine, _) = best(&mut (0..8).flat_map(|k| [coarse + k, coarse - k]));
+            self.next + fine as f64
         };
         // the grain lands where the mix lines up best; a stereo sound's sides follow it there
-        let read = |x: &[f32], pos: f64| {
-            let i = pos as usize;
-            match (x.get(i), x.get(i + 1)) {
-                (Some(a), Some(b)) => a + (b - a) * (pos - i as f64) as f32,
-                (Some(a), None) => *a,
-                _ => 0.0,
-            }
-        };
+        let last = x.len() as isize - 1;
         for k in 0..n {
             // the first grain keeps its attack: no fade in
             let w = if self.first && k < hop { 1.0 } else { (PI * k as f32 / n as f32).sin().powi(2) };
-            let pos = start + k as f64 * step;
-            self.acc[k] += w * read(x, wrap(pos));
+            let pos = wrap(start + k as f64 * step);
+            let i = pos as usize;
+            if i as isize > last {
+                continue;
+            }
+            let tap = taps((pos - i as f64) as f32, |d| (i as isize + d).clamp(0, last) as usize);
+            self.acc[k] += w * read(x, &tap);
             if !sides.is_empty() {
-                self.side[k] += w * read(sides, wrap(pos));
+                self.side[k] += w * read(sides, &tap);
             }
         }
         self.last = start;

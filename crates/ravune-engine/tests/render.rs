@@ -49,9 +49,11 @@ fn sampler(slot: u8) -> Channel {
     c
 }
 
-/// One sampler channel (slot 0) whose pattern 0 has `steps` on.
+/// One sampler channel (slot 0) whose pattern 0 has `steps` on, and a bare master (the
+/// starter's limiter would delay what these tests time to the sample).
 fn beat(steps: &[usize]) -> Project {
     let mut p = Project { channels: vec![sampler(0)], patterns: vec![Pattern::default()], ..Project::default() };
+    p.mixer[0].devices.clear();
     steps.iter().for_each(|&s| p.patterns[0].set_step(0, s, 127));
     p
 }
@@ -753,7 +755,7 @@ fn plugin_instruments_and_effects_run_through_their_bridges() {
     let mut p = Project { channels: vec![Channel::new(4, "plug", Instrument::Plugin { plugin: plugin.clone() })], ..Project::default() };
     p.channels[0].gain = 1.0;
     p.patterns[0].set_step(4, 1, 127); // a note on step 2
-    p.mixer[0].devices.push(Device { id: 9, kind: DeviceKind::Plugin, params: Vec::new(), bypass: false, sidechain: None, plugin: Some(plugin) , name: String::new(), color: None, icon: None });
+    p.mixer[0].devices = vec![Device { id: 9, kind: DeviceKind::Plugin, params: Vec::new(), bypass: false, sidechain: None, plugin: Some(plugin) , name: String::new(), color: None, icon: None }];
     let mut r = Renderer::new(SR);
     let mut fx_state = Effects::default();
     let _garbage = load_fx(&mut r, &mut fx_state, &p, &burst());
@@ -982,4 +984,36 @@ fn the_strip_eq_shapes_a_track() {
     assert!(energy([-15.0; 3]) < flat * 0.5, "cut everywhere: quieter");
     assert!(energy([0.0, 0.0, 15.0]) > flat * 1.5, "more highs: brighter, louder");
     assert_eq!(energy([0.0; 3]), flat, "flat leaves it untouched");
+}
+
+/// A 44.1 kHz sound played at 48 kHz (the library on most devices), plainly and stretched:
+/// the alias resampling folds back (12 kHz → 15.9 kHz) stays far under the tone (a
+/// straight line between frames left it 17 dB under).
+#[test]
+fn resampling_keeps_aliases_down() {
+    use std::f32::consts::TAU;
+    let rate = 44_100.0;
+    let tone = Arc::new(Sample::new((0..2 * rate as usize).map(|i| (i as f32 * TAU * 12_000.0 / rate).sin() * 0.5).collect(), rate));
+    // windowed single-bin DFT
+    let level = |x: &[f32], hz: f32| {
+        let (mut re, mut im) = (0.0f64, 0.0f64);
+        for (k, v) in x.iter().enumerate() {
+            let w = (std::f64::consts::PI * k as f64 / x.len() as f64).sin().powi(2) * *v as f64;
+            let phase = std::f64::consts::TAU * hz as f64 * k as f64 / SR as f64;
+            (re, im) = (re + w * phase.cos(), im + w * phase.sin());
+        }
+        re.hypot(im)
+    };
+    let alias = |x: &[f32]| 20.0 * (level(x, 15_900.0) / level(x, 12_000.0)).log10();
+    let (mut l, mut r) = (vec![0.0; 24_000], vec![0.0; 24_000]);
+    let mut s = ravune_engine::Sampler::default();
+    s.trigger(tone.clone(), 1.0, 0.0, SR);
+    s.render(&mut l, &mut r);
+    let played = alias(&l[4_000..20_000]);
+    let (mut l, mut r) = (vec![0.0; 24_000], vec![0.0; 24_000]);
+    let mut s = ravune_engine::Stretcher::new();
+    s.trigger(tone, 1.0, SR, 0.0, 1.0, 0.0, false);
+    s.render(&mut l, &mut r);
+    let stretched = alias(&l[4_000..20_000]);
+    assert!(played < -45.0 && stretched < -45.0, "aliases: played {played:.1} dB, stretched {stretched:.1} dB");
 }

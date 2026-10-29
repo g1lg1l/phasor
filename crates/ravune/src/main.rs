@@ -33,6 +33,7 @@ mod script;
 mod rack;
 mod shell;
 mod theme;
+mod visualizer;
 mod widgets;
 mod workspace;
 
@@ -162,6 +163,8 @@ struct Settings {
     snap_cuts: bool,
     /// The mixer shows its ghost tracks (sounds' own tracks) after the others.
     show_ghosts: bool,
+    /// The visualizer: shown, where, spectrum or scope.
+    viz: visualizer::Prefs,
 }
 
 impl Default for Settings {
@@ -199,6 +202,7 @@ impl Default for Settings {
             inspector_window: false,
             snap_cuts: false,
             show_ghosts: false,
+            viz: visualizer::Prefs::default(),
         }
     }
 }
@@ -261,6 +265,7 @@ struct App {
     folded: std::collections::HashSet<u32>,
     /// Peak-hold levels for the mixer meters.
     holds: [f32; MAX_TRACKS],
+    viz: visualizer::Visualizer,
     /// Click sparks still flying.
     sparks: Vec<kit::Spark>,
     /// The docked editor shown last frame, and when it changed (for the crossfade).
@@ -360,6 +365,7 @@ impl App {
             mixer_cable: None,
             folded: Default::default(),
             holds: [0.0; MAX_TRACKS],
+            viz: visualizer::Visualizer::default(),
             sparks: Vec::new(),
             last_tab: Tab::Rack,
             tab_since: 0.0,
@@ -428,6 +434,10 @@ impl App {
         let mut app = Self::idle(settings, files::take_recovery());
         app.crash = files::take_crash();
         app.theme.apply(&cc.egui_ctx);
+        if let Some(state) = &cc.wgpu_render_state {
+            visualizer::install(state);
+            app.viz.gpu = true;
+        }
         cc.egui_ctx.set_zoom_factor(app.settings.zoom);
         app.load_workspace(app.settings.workspace);
         app.start_engine(0.0);
@@ -611,6 +621,7 @@ impl App {
             "app.browser" => self.settings.show_browser = !self.settings.show_browser,
             "app.editors" => self.settings.show_editor = !self.settings.show_editor,
             "app.keys" => self.settings.show_keys = !self.settings.show_keys,
+            "app.visualizer" => self.settings.viz.show = !self.settings.viz.show,
             "app.chat" => {
                 self.settings.show_chat = !self.settings.show_chat;
                 self.chat.focus = self.settings.show_chat;
@@ -894,6 +905,8 @@ impl eframe::App for App {
         }
         // every side region folds away with a slide; folded, it leaves a rail or a bar
         // a chevron inside the panel changes the setting itself: keep that, unless the panel changed it
+        // declared before the keys: at the bottom it sits under them
+        self.visualizer_panel(ui);
         let was = self.settings.show_keys;
         let mut keys = was;
         egui::Panel::bottom("keys").frame(fill(t.bg_panel)).show_collapsible(ui, &mut keys, |ui| self.keyboard_panel(ui));
@@ -935,6 +948,7 @@ impl eframe::App for App {
             self.drop_on_playlist(None); // dropped somewhere else: new lanes at the start marker
         }
         self.windows(&ctx);
+        self.visualizer_window(&ctx);
         self.preferences(&ctx, now);
         self.theme_editor(&ctx);
         self.shortcut_sheet(&ctx);

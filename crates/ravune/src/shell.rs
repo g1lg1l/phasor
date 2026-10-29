@@ -318,7 +318,7 @@ impl App {
             self.menu_command(ui, icon, i18n::t(label), command);
         }
         ui.separator();
-        for (label, command, on) in [(tr!("Browser"), "app.browser", self.settings.show_browser), (tr!("Editor area"), "app.editors", self.settings.show_editor), (tr!("On-screen keys"), "app.keys", self.settings.show_keys), (tr!("Agent chat"), "app.chat", self.settings.show_chat)] {
+        for (label, command, on) in [(tr!("Browser"), "app.browser", self.settings.show_browser), (tr!("Editor area"), "app.editors", self.settings.show_editor), (tr!("On-screen keys"), "app.keys", self.settings.show_keys), (tr!("Visualizer"), "app.visualizer", self.settings.viz.show), (tr!("Agent chat"), "app.chat", self.settings.show_chat)] {
             let mut v = on;
             if ui.checkbox(&mut v, label).changed() {
                 self.command(command);
@@ -443,6 +443,10 @@ impl App {
             let text = [&self.info, &self.info_zone].into_iter().find(|s| !s.is_empty()).unwrap_or(&tip);
             ui.add(egui::Label::new(RichText::new(text).color(t.fg_muted).small()).truncate());
             kit::right(ui, |ui| {
+                let r = kit::icon_button(ui, &t, icons::WAVEFORM, &self.tip(tr!("Visualizer"), "app.visualizer"), self.settings.viz.show);
+                if r.clicked() {
+                    self.settings.viz.show = !self.settings.viz.show;
+                }
                 let r = kit::icon_button(ui, &t, icons::KEYBOARD, &self.tip(tr!("On-screen keys"), "app.keys"), self.settings.show_keys);
                 if r.clicked() {
                     self.settings.show_keys = !self.settings.show_keys;

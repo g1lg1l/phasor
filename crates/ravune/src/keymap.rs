@@ -17,7 +17,7 @@ const fn cmd(group: &'static str, id: &'static str, label: &'static str) -> Comm
     Command { id, label, group }
 }
 
-pub const COMMANDS: [Command; 34] = [
+pub const COMMANDS: [Command; 35] = [
     cmd("Transport", "transport.play_toggle", "Play / stop (besides Space)"),
     cmd("Transport", "transport.mode_toggle", "Pattern / song mode"),
     cmd("Transport", "transport.metronome_toggle", "Metronome"),
@@ -46,6 +46,7 @@ pub const COMMANDS: [Command; 34] = [
     cmd("Layout", "app.browser", "Fold / open the browser"),
     cmd("Layout", "app.editors", "Fold / open the editors"),
     cmd("Layout", "app.keys", "Show / hide the keys"),
+    cmd("Layout", "app.visualizer", "Show / hide the visualizer"),
     cmd("Layout", "app.chat", "Agent chat"),
     cmd("Layout", "workspace.next", "Next workspace"),
     cmd("Layout", "workspace.prev", "Previous workspace"),

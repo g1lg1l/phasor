@@ -15,7 +15,7 @@ mod song;
 mod stretch;
 mod synth;
 
-use std::sync::atomic::{AtomicBool, AtomicU32, AtomicU64, Ordering::Relaxed};
+use std::sync::atomic::{AtomicBool, AtomicU32, AtomicU64, AtomicUsize, Ordering::Relaxed};
 use std::sync::{Arc, Mutex};
 use std::time::Instant;
 
@@ -120,9 +120,26 @@ pub enum Msg {
 // Stats: audio thread → UI, lock-free.
 // ---------------------------------------------------------------------------
 
+/// Frames of the output kept for the UI to look at (a visualizer).
+pub const SCOPE: usize = 4096;
+
+/// The latest output in mono, round and round: what the visualizer draws.
+struct Scope {
+    frames: Box<[AtomicU32]>,
+    /// Frames written so far; the next goes at `at % SCOPE`.
+    at: AtomicUsize,
+}
+
+impl Default for Scope {
+    fn default() -> Self {
+        Self { frames: (0..SCOPE).map(|_| AtomicU32::new(0)).collect(), at: AtomicUsize::new(0) }
+    }
+}
+
 #[derive(Default)]
 pub struct Stats {
     peak: AtomicU32,
+    scope: Scope,
     beat: AtomicU64,
     held: [AtomicU64; 2],
     frames: AtomicU32,
@@ -136,6 +153,14 @@ impl Stats {
     /// Peak level since the last call.
     pub fn take_peak(&self) -> f32 {
         f32::from_bits(self.peak.swap(0, Relaxed))
+    }
+    /// The latest `out.len()` frames of the output (up to [`SCOPE`]), oldest first, in mono.
+    pub fn scope(&self, out: &mut [f32]) {
+        let n = out.len().min(SCOPE);
+        let at = self.scope.at.load(Relaxed).wrapping_sub(n);
+        for (k, o) in out[..n].iter_mut().enumerate() {
+            *o = f32::from_bits(self.scope.frames[at.wrapping_add(k) % SCOPE].load(Relaxed));
+        }
     }
     /// Peak level of a mixer track since the last call (post-fader).
     pub fn take_meter(&self, track: usize) -> f32 {
@@ -218,12 +243,16 @@ impl Audio {
             self.handle(m);
         }
         let mut peak = 0.0f32;
+        let scope = &self.stats.scope;
+        let mut at = scope.at.load(Relaxed);
         for chunk in data.chunks_mut(BLOCK * self.channels) {
             let n = chunk.len() / self.channels;
             let (l, r) = (&mut self.l[..n], &mut self.r[..n]);
             self.renderer.render(l, r);
             for (i, frame) in chunk.chunks_mut(self.channels).enumerate() {
                 peak = peak.max(l[i].abs()).max(r[i].abs());
+                scope.frames[at % SCOPE].store(((l[i] + r[i]) * 0.5).to_bits(), Relaxed);
+                at = at.wrapping_add(1);
                 for (c, out) in frame.iter_mut().enumerate() {
                     let x = match (c, self.channels) {
                         (_, 1) => (l[i] + r[i]) * 0.5,
@@ -235,6 +264,7 @@ impl Audio {
                 }
             }
         }
+        scope.at.store(at, Relaxed);
         let frames = (data.len() / self.channels) as u32;
         let s = &self.stats;
         for (m, x) in s.meters.iter().zip(self.renderer.take_meters()) {

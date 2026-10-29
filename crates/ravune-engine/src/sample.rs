@@ -1,8 +1,9 @@
 //! Samples: decoding (any format symphonia knows), WAV writing, and the sampler (one-shots,
 //! and held notes with release and loops for multi-sample instruments).
 
+use std::f64::consts::PI;
 use std::io::Cursor;
-use std::sync::Arc;
+use std::sync::{Arc, LazyLock};
 
 use symphonia::core::codecs::audio::AudioDecoderOptions;
 use symphonia::core::errors::Error;
@@ -202,6 +203,54 @@ pub fn write_wav_as(path: &std::path::Path, samples: &[f32], channels: u16, rate
 // Sampler: polyphonic one-shot player (runs on the audio thread, never allocates)
 // ---------------------------------------------------------------------------
 
+// ---------------------------------------------------------------------------
+// Reading between frames: a Kaiser-windowed sinc over the 8 frames around (3 before, 4
+// after), from a table of 1024 fractions. A straight line between two frames folds a
+// 44.1 kHz sound's highs back down at 48 kHz only 17 dB under them (grit on every hat);
+// this keeps them over 50 dB under. On a whole frame it reads that frame exactly.
+// ---------------------------------------------------------------------------
+
+const TAPS: usize = 8;
+const PHASES: usize = 1024;
+
+static KERNEL: LazyLock<[[f32; TAPS]; PHASES + 1]> = LazyLock::new(|| {
+    // I0, by its series
+    let bessel = |x: f64| {
+        let (mut sum, mut term) = (1.0, 1.0);
+        for k in 1..32 {
+            term *= (x / (2.0 * k as f64)).powi(2);
+            sum += term;
+        }
+        sum
+    };
+    const BETA: f64 = 5.0;
+    std::array::from_fn(|p| {
+        let t = p as f64 / PHASES as f64;
+        let row: [f64; TAPS] = std::array::from_fn(|k| {
+            let d = k as f64 - 3.0 - t;
+            let sinc = if d == 0.0 { 1.0 } else if t.fract() == 0.0 { 0.0 } else { (PI * d).sin() / (PI * d) };
+            sinc * bessel(BETA * (1.0 - (d / 4.0).powi(2)).max(0.0).sqrt()) / bessel(BETA)
+        });
+        let sum: f64 = row.iter().sum();
+        row.map(|h| (h / sum) as f32)
+    })
+});
+
+/// Builds the table now, so the audio thread never does.
+pub(crate) fn warm_up() {
+    LazyLock::force(&KERNEL);
+}
+
+/// Where to read `t` (0..1) past a frame: the frames around it (`frame(k)`: where the one `k`
+/// away is) and their weights.
+pub(crate) fn taps(t: f32, frame: impl Fn(isize) -> usize) -> ([usize; TAPS], &'static [f32; TAPS]) {
+    (std::array::from_fn(|k| frame(k as isize - 3)), &KERNEL[(t.clamp(0.0, 1.0) * PHASES as f32).round() as usize])
+}
+
+pub(crate) fn read(x: &[f32], (at, w): &([usize; TAPS], &[f32; TAPS])) -> f32 {
+    at.iter().zip(w.iter()).map(|(i, w)| x[*i] * w).sum()
+}
+
 const VOICES: usize = 32;
 /// Fade length when a voice is choked or stolen, avoids clicks.
 const FADE_SAMPLES: f32 = 96.0;
@@ -381,8 +430,16 @@ impl Sampler {
                 if v.fade == 0.0 && v.end - v.pos <= FADE_SAMPLES as f64 * v.step {
                     v.fade = v.gain / FADE_SAMPLES;
                 }
-                let frac = (v.pos - i as f64) as f32;
-                let (m, s) = (frames[i] + (frames[next] - frames[i]) * frac, if side.is_empty() { 0.0 } else { side[i] + (side[next] - side[i]) * frac });
+                // the frames around: round the loop's seam, held at either end
+                let (last, looped) = (frames.len() as isize - 1, v.looped);
+                let tap = taps((v.pos - i as f64) as f32, |k| {
+                    let j = i as isize + k;
+                    match looped {
+                        Some((a, b)) if j >= b as isize => (a as isize + j - b as isize).clamp(0, last) as usize,
+                        _ => j.clamp(0, last) as usize,
+                    }
+                });
+                let (m, s) = (read(frames, &tap), if side.is_empty() { 0.0 } else { read(side, &tap) });
                 let g = v.gain * v.rise;
                 *a += (m + s) * g;
                 *b += (m - s) * g;
