@@ -168,6 +168,7 @@ fn plug_note(kind: u32, at: usize, key: u8, velocity: f32) -> PlugEvent {
 
 impl Renderer {
     pub fn new(sample_rate: f32) -> Self {
+        crate::sample::warm_up();
         Self {
             sr: sample_rate,
             song: Arc::new(Song::empty()),
@@ -621,8 +622,8 @@ impl Renderer {
         let (from, to) = (self.output_now, self.output);
         for (k, ((a, b), d)) in l.iter_mut().zip(r.iter_mut()).zip(&self.direct).enumerate() {
             let g = from + (to - from) * k as f32 / n as f32;
-            *a = ((*a + d) * g).clamp(-1.0, 1.0);
-            *b = ((*b + d) * g).clamp(-1.0, 1.0);
+            *a = safe((*a + d) * g);
+            *b = safe((*b + d) * g);
         }
         self.output_now = to;
     }
@@ -952,6 +953,20 @@ impl Renderer {
     pub fn held_notes(&self) -> u128 {
         self.held
     }
+}
+
+/// The last word before the device: untouched up to the knee, then bent smoothly toward full
+/// scale. A mix that runs hot rounds off instead of clipping flat (a limiter on the master
+/// keeps it clean); a blown-up effect gives silence, not a blast.
+fn safe(x: f32) -> f32 {
+    const KNEE: f32 = 0.9;
+    if !x.is_finite() {
+        return 0.0;
+    }
+    if x.abs() <= KNEE {
+        return x;
+    }
+    x.signum() * (KNEE + (1.0 - KNEE) * ((x.abs() - KNEE) / (1.0 - KNEE)).tanh())
 }
 
 fn add(bus: &mut Bus, from: usize, l: &[f32], r: &[f32], gain: f32) {

@@ -4,7 +4,7 @@ use std::collections::BTreeMap;
 
 use serde::{Deserialize, Serialize};
 
-use crate::{CcMap, Device, Lfo, MACROS, Macro, Mapping, MixerTrack, PARAM_COUNT, Target, default_synth};
+use crate::{CcMap, Device, DeviceKind, Lfo, MACROS, Macro, Mapping, MixerTrack, PARAM_COUNT, Target, default_synth};
 
 /// Ticks per quarter note. Every time in the project is an integer number of ticks.
 pub const PPQ: u32 = 96;
@@ -738,13 +738,18 @@ impl Default for Project {
         let mut channels = vec![sampler(0, "Kick", "kick.wav"), sampler(1, "Snare", "snare.wav"), sampler(2, "Clap", "clap.wav"), closed, open];
         channels.iter_mut().for_each(|c| c.track = 1);
         channels.push(synth);
+        // a limiter on the master, as the templates have: clips and channels stacking up
+        // past full scale stay clean instead of clipping
+        let mut master = MixerTrack::new("Master");
+        let kind = DeviceKind::Limiter;
+        master.devices.push(Device { id: 1, kind, params: kind.defaults(), bypass: false, sidechain: None, plugin: None, name: String::new(), color: None, icon: None });
         Self {
-            mixer: vec![MixerTrack::new("Master"), MixerTrack::new("Drums"), MixerTrack::new("Synth")],
+            mixer: vec![master, MixerTrack::new("Drums"), MixerTrack::new("Synth")],
             macros: (1..=MACROS).map(|i| Macro { name: format!("Macro {i}"), value: 0.0 }).collect(),
             lfos: Vec::new(),
             mappings: Vec::new(),
             midi_map: Vec::new(),
-            next_id: 1,
+            next_id: 2,
             tempo: 120.0,
             metronome: false,
             swing: 0.0,
