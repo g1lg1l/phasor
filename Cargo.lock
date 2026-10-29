@@ -3246,7 +3246,7 @@ checksum = "ca45419789ae5a7899559e9512e58ca889e41f04f1f2445e9f4b290ceccd1d08"
 
 [[package]]
 name = "ravune"
-version = "0.9.0-beta"
+version = "0.9.1-beta"
 dependencies = [
  "assert_no_alloc",
  "eframe",
@@ -3272,7 +3272,7 @@ dependencies = [
 
 [[package]]
 name = "ravune-bridge"
-version = "0.9.0-beta"
+version = "0.9.1-beta"
 dependencies = [
  "base64",
  "libc",
@@ -3284,7 +3284,7 @@ dependencies = [
 
 [[package]]
 name = "ravune-core"
-version = "0.9.0-beta"
+version = "0.9.1-beta"
 dependencies = [
  "ron",
  "serde",
@@ -3293,7 +3293,7 @@ dependencies = [
 
 [[package]]
 name = "ravune-engine"
-version = "0.9.0-beta"
+version = "0.9.1-beta"
 dependencies = [
  "assert_no_alloc",
  "cpal",
@@ -3308,7 +3308,7 @@ dependencies = [
 
 [[package]]
 name = "ravune-host"
-version = "0.9.0-beta"
+version = "0.9.1-beta"
 dependencies = [
  "clack-extensions",
  "clack-host",
@@ -3326,7 +3326,7 @@ dependencies = [
 
 [[package]]
 name = "ravune-mcp"
-version = "0.9.0-beta"
+version = "0.9.1-beta"
 dependencies = [
  "serde_json",
 ]
